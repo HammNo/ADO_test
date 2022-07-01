@@ -1,0 +1,6 @@
+C:\Users\Student\source\repos\ADO_exo1\ADO_exo1\bin\Debug\ADO_exo1.dacpac
+C:\Users\Student\source\repos\ADO_exo1\ADO_exo1\bin\Debug\ADO_exo1.dll
+C:\Users\Student\source\repos\ADO_exo1\ADO_exo1\bin\Debug\ADO_exo1.pdb
+C:\Users\Student\source\repos\ADO_exo1\ADO_exo1\obj\Debug\ADO_exo1.sqlproj.AssemblyReference.cache
+C:\Users\Student\source\repos\ADO_exo1\ADO_exo1\obj\Debug\ADO_exo1.dll
+C:\Users\Student\source\repos\ADO_exo1\ADO_exo1\obj\Debug\ADO_exo1.pdb

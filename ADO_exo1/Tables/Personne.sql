@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[Personne]
+(
+	[Id] INT NOT NULL IDENTITY,
+	[Prenom] VARCHAR(50) NOT NULL,
+	[Nom] VARCHAR(50) NOT NULL,
+	[DateNaiss] DATETIME2 NOT NULL,
+	[Adresse] INT NULL,
+	CONSTRAINT [PK_Personne] PRIMARY KEY ([Id])
+)

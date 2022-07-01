@@ -1,0 +1,20 @@
+﻿** Met en surbrillance
+     Tables à reconstruire
+       Aucun
+     Index ordonnés en clusters à supprimer
+       Aucun
+     Index ordonnés en clusters à créer.
+       Aucun
+     Problèmes de données possibles
+       Aucun
+
+** Actions de l'utilisateur
+     Créer
+       [dbo].[Categorie] (Table)
+       [dbo].[Personne] (Table)
+       [dbo].[Tache] (Table)
+       [dbo].[FK_Tache_Personne] (Clé étrangère)
+       [dbo].[FK_Tache_Categorie] (Clé étrangère)
+       [dbo].[CK_Tache_DateFinEff] (Contrainte de validation)
+
+** Actions de support
