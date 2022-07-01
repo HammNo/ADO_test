@@ -108,7 +108,22 @@ namespace Consommation
             TacheService tacheConnection = new TacheService();
             PersonneService personneConnection = new PersonneService();
             CategorieService categorieConnection = new  CategorieService();
-            IEnumerable<Tache> taches = tacheConnection.GetRangeTaches(type, id);
+            IEnumerable<Tache> taches = null;
+            switch (type)
+            {
+                case 0:
+                    taches = tacheConnection.GetbyCategory(id);
+                    break;
+                case 1:
+                    taches = tacheConnection.GetbyPersonne(id);
+                    break;
+                case 2:
+                    taches = tacheConnection.GetAll();
+                    break;
+                case 3:
+                    taches = tacheConnection.GetNotFinished();
+                    break;
+            }
             int x = 0;
             int y = 0;
             Console.WriteLine("Liste des tâches :\n");
@@ -139,7 +154,8 @@ namespace Consommation
         {
             PersonneService personneConnection = new PersonneService();
             IEnumerable<Personne> personnes = personneConnection.GetAll();
-            Console.WriteLine("\nListe des personnes :\n");
+            Console.WriteLine("Liste des personnes :");
+            Console.WriteLine();
             foreach (Personne personne in personnes)
             {
                 Console.WriteLine($"[{personne.Id}] {personne.Prenom} {personne.Nom}");
@@ -149,7 +165,8 @@ namespace Consommation
         {
             CategorieService categorieConnection = new CategorieService();
             IEnumerable<Categorie> categories = categorieConnection.GetAll();
-            Console.WriteLine("\nListe des catégories :\n");
+            Console.WriteLine("Liste des catégories :");
+            Console.WriteLine();
             foreach (Categorie categorie in categories)
             {
                 Console.WriteLine($"[{categorie.Id}] {categorie.Nom}");
@@ -198,7 +215,11 @@ namespace Consommation
                         Console.CursorVisible = true;
                         Console.Write("Id de la catégorie : ");
                         int id = 0;
-                        if (int.TryParse(Console.ReadLine(), out id)) ShowTaches(0, id);
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            Console.WriteLine();
+                            ShowTaches(0, id);
+                        }
                     }
                     break;
                 case ConsoleKey.P:
@@ -207,10 +228,15 @@ namespace Consommation
                         Console.CursorVisible = true;
                         Console.Write("Id de la personne : ");
                         int id = 0;
-                        if (int.TryParse(Console.ReadLine(), out id)) ShowTaches(1, id);
+                        if (int.TryParse(Console.ReadLine(), out id))
+                        {
+                            Console.WriteLine();
+                            ShowTaches(1, id);
+                        }
                     }
                     break;
                 case ConsoleKey.N:
+                    Console.WriteLine();
                     if(type == 2) ShowTaches(3, 0);
                     break;
                 case ConsoleKey.F:
@@ -221,14 +247,16 @@ namespace Consommation
         }
         static void Main(string[] args)
         {
-            Console.SetWindowSize((int)(Console.LargestWindowWidth / 1.1), (int)(Console.LargestWindowHeight/ 1.1));
+            Console.SetWindowSize((int)(Console.LargestWindowWidth / 1.1), (int)(Console.LargestWindowHeight/ 1.15));
             bool cont = true;
             while (cont)
             {
                 Console.Clear();
                 Console.CursorVisible = false;
                 ShowTaches(2, 0);
+                Console.WriteLine();
                 ShowPersonnes();
+                Console.WriteLine();
                 ShowCategories();
                 Console.WriteLine("\nModifier table : [t] Taches - [p] Personnes - [c] Categories");
                 ConsoleKeyInfo key = Console.ReadKey(true);

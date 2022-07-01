@@ -15,16 +15,38 @@ namespace DAL.Services
         {
             get { return _connectionStringMMSMLog = "server=5239;database=ADO_exo1;User Id=sa;Password=formation"; }
         }
-        public IEnumerable<Tache> GetRangeTaches(int type, int id)
+        public IEnumerable<Tache> GetAll()
         {
             using (SqlConnection connection = new SqlConnection(ConnectionStringMMSMLog))
             {
                 connection.Open();
                 SqlCommand command = connection.CreateCommand();
-                if (type == 0) command.CommandText = "SELECT * FROM Tache WHERE CategorieId = @id";
-                else if (type == 1) command.CommandText = "SELECT * FROM Tache WHERE PersonneId = @id";
-                else if (type == 3) command.CommandText = "SELECT * FROM Tache WHERE DateFinEff IS NULL";
-                else command.CommandText = "SELECT * FROM Tache";
+                command.CommandText = "SELECT * FROM Tache";
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Tache tache = new Tache()
+                    {
+                        Id = (int)reader["Id"],
+                        Nom = (string)reader["Nom"],
+                        CategorieId = (int)reader["CategorieId"],
+                        Description = (string)reader["Descr"],
+                        DateCreation = (DateTime)reader["DateCreation"],
+                        DateFinEstim = (DateTime)reader["DateFinEstim"],
+                        DateFinEff = reader["DateFinEff"] as DateTime? ?? null,
+                        PersonneId = (int)reader["PersonneId"]
+                    };
+                    yield return tache;
+                }
+            }
+        }
+        public IEnumerable<Tache> GetbyPersonne(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionStringMMSMLog))
+            {
+                connection.Open();
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM Tache WHERE PersonneId = @id";
                 command.Parameters.AddWithValue("id", id);
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -37,7 +59,58 @@ namespace DAL.Services
                         Description = (string)reader["Descr"],
                         DateCreation = (DateTime)reader["DateCreation"],
                         DateFinEstim = (DateTime)reader["DateFinEstim"],
-                        DateFinEff = (reader["DateFinEff"] != DBNull.Value)? (DateTime?) reader["DateFinEff"] : null,
+                        DateFinEff = reader["DateFinEff"] as DateTime? ?? null,
+                        PersonneId = (int)reader["PersonneId"]
+                    };
+                    yield return tache;
+                }
+            }
+        }       
+        public IEnumerable<Tache> GetbyCategory(int id)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionStringMMSMLog))
+            {
+                connection.Open();
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM Tache WHERE CategorieId = @id";
+                command.Parameters.AddWithValue("id", id);
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Tache tache = new Tache()
+                    {
+                        Id = (int)reader["Id"],
+                        Nom = (string)reader["Nom"],
+                        CategorieId = (int)reader["CategorieId"],
+                        Description = (string)reader["Descr"],
+                        DateCreation = (DateTime)reader["DateCreation"],
+                        DateFinEstim = (DateTime)reader["DateFinEstim"],
+                        DateFinEff = reader["DateFinEff"] as DateTime? ?? null,
+                        PersonneId = (int)reader["PersonneId"]
+                    };
+                    yield return tache;
+                }
+            }
+        }
+        public IEnumerable<Tache> GetNotFinished()
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionStringMMSMLog))
+            {
+                connection.Open();
+                SqlCommand command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM Tache WHERE DateFinEff IS NULL";
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Tache tache = new Tache()
+                    {
+                        Id = (int)reader["Id"],
+                        Nom = (string)reader["Nom"],
+                        CategorieId = (int)reader["CategorieId"],
+                        Description = (string)reader["Descr"],
+                        DateCreation = (DateTime)reader["DateCreation"],
+                        DateFinEstim = (DateTime)reader["DateFinEstim"],
+                        DateFinEff = reader["DateFinEff"] as DateTime? ?? null,
                         PersonneId = (int)reader["PersonneId"]
                     };
                     yield return tache;
@@ -109,9 +182,6 @@ namespace DAL.Services
                 command.Parameters.AddWithValue("Id", id);
                 return command.ExecuteNonQuery();
             }
-        }
-        public TacheService()
-        {
         }
     }
 }
